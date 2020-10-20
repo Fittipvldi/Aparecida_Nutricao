@@ -10,10 +10,12 @@ botaoAdicionar.addEventListener('click', function(event){
 
     pacienteTr = montaTr(paciente);
 
+    var erros = validaPaciente(paciente);
+
     //validacao do paciente
-    if(!validaPaciente(paciente)){
-        console.log('Paciente Inválido')
-        return; // retorna e não executa as demais linhas
+    if(erros.length > 0){
+        exibeErro(erros);
+        return; // retorno é vazio e não executa as demais linhas
     }
 
     // adicionando o paciente na tabela
@@ -22,6 +24,9 @@ botaoAdicionar.addEventListener('click', function(event){
 
     // limpando os campos
     form.reset();
+
+    var mensagensErro = document.querySelector('#mensagens-erro');
+    mensagensErro.innerHTML = '' // limpando a tela de erros
 });
 
 
@@ -62,9 +67,42 @@ function montaTd(dado, classe){
 
 
 function validaPaciente(paciente){
-    if(validaPeso(paciente.peso) && validaAltura(paciente.altura)){
-        return true;
-    }else{
-        return false;
+    var erros = [];
+
+    if(paciente.nome.length == 0){
+        erros.push('Nome não preenchido');
     }
+
+    if(paciente.peso.length == 0){
+        erros.push('Peso não preenchido');
+    }
+
+    if(!validaPeso(paciente.peso)){
+        erros.push('Peso é inválido');
+    }
+
+    if(paciente.altura.length == 0){
+        erros.push('Altura não preenchida');
+    }
+
+    if(!validaAltura(paciente.altura)){
+        erros.push('Altura é inválida');
+    }
+
+    if(paciente.gordura.length == 0){
+        erros.push('Gordura não preenchida');
+    }
+
+    return erros;
+}
+
+function exibeErro(erros){
+    var ul = document.querySelector('#mensagens-erro');
+    ul.innerHTML = '' // apagando qualquer conteudo dentro da ul
+
+    erros.forEach(function(i){
+        var li = document.createElement('li');
+        li.textContent = i;
+        ul.appendChild(li);
+    });
 }
