@@ -1,7 +1,5 @@
-var pacientes = document.querySelectorAll('.paciente');
+var tabela = document.querySelector('table');
 
-pacientes.forEach(function(i){
-    i.addEventListener('dblclick', function(){
-        this.remove();
-    });
+tabela.addEventListener('dblclick', function(event){
+    event.target.parentNode.remove(); // quando realizado o dblclick na td, a tr é excluida
 });
